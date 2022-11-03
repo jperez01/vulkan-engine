@@ -1,0 +1,12 @@
+# ninja log v5
+100	795	6867255564438045	src/CMakeFiles/vulkan_guide.dir/vk_initializers.cpp.obj	34b1a101fd37a848
+80	828	6867255564618095	third_party/CMakeFiles/imgui.dir/imgui/imgui_impl_vulkan.cpp.obj	d9619afb4fdd62d4
+105	856	6867255564818133	src/CMakeFiles/vulkan_guide.dir/main.cpp.obj	d28cbcbe75f591b2
+84	878	6867255565328249	third_party/CMakeFiles/imgui.dir/imgui/imgui_draw.cpp.obj	a8da357848bc5aea
+89	898	6867255565538285	third_party/CMakeFiles/imgui.dir/imgui/imgui_widgets.cpp.obj	a2579375b3ae7506
+74	901	6867255565568299	third_party/CMakeFiles/imgui.dir/imgui/imgui_demo.cpp.obj	2eb56b9e37775691
+70	1070	6867255567268676	third_party/CMakeFiles/imgui.dir/imgui/imgui.cpp.obj	87f4893b0bcba6a6
+1	1517	6867255571729680	third_party/CMakeFiles/tinyobjloader.dir/tinyobjloader/tiny_obj_loader.cc.obj	884976d0e137319a
+65	1768	6867255574240243	third_party/CMakeFiles/vkbootstrap.dir/vkbootstrap/VkBootstrap.cpp.obj	c2ea721ffa708f4b
+2	133	6867257967716474	third_party/vkbootstrap.lib	bf9829ac18967b62
+5	134	6867257967716474	third_party/tinyobjloader.lib	7ef6b8a01e907384
