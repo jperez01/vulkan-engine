@@ -14,6 +14,7 @@
 struct Material {
 	VkPipeline pipeline;
 	VkPipelineLayout pipelineLayout;
+	VkDescriptorSet textureSet{VK_NULL_HANDLE};
 };
 
 struct RenderObject {
@@ -75,6 +76,17 @@ struct GPUObjectData {
 	glm::mat4 modelMatrix;
 };
 
+struct UploadContext {
+	VkFence uploadFence;
+	VkCommandPool commandPool;
+	VkCommandBuffer commandBuffer;
+};
+
+struct Texture {
+	AllocatedImage image;
+	VkImageView imageView;
+};
+
 constexpr unsigned int FRAME_OVERLAP = 2;
 
 class VulkanEngine {
@@ -97,8 +109,11 @@ public:
 	FrameData m_frames[FRAME_OVERLAP];
 	FrameData& get_current_frame();
 
+	UploadContext m_uploadContext;
+
 	VkDescriptorSetLayout m_globalSetLayout;
 	VkDescriptorSetLayout m_objectSetLayout;
+	VkDescriptorSetLayout m_singleTextureSetLayout;
 	VkDescriptorPool m_descriptorPool;
 
 	GPUSceneData m_sceneParameters;
@@ -131,6 +146,7 @@ public:
 	std::vector<RenderObject> m_renderables;
 	std::unordered_map<std::string, Material> m_materials;
 	std::unordered_map<std::string, Mesh> m_meshes;
+	std::unordered_map<std::string, Texture> m_textures;
 
 	bool _isInitialized{ false };
 	int _frameNumber {0};
@@ -151,6 +167,10 @@ public:
 	//run main loop
 	void run();
 
+	void immediate_submit(std::function<void(VkCommandBuffer cmd)>&& function);
+
+	AllocatedBuffer create_buffer(size_t allocSize, VkBufferUsageFlags usage, VmaMemoryUsage memoryUsage);
+
 private:
 	void init_vulkan();
 	void init_swapchain();
@@ -170,10 +190,10 @@ private:
 
 	void draw_objects(VkCommandBuffer cmd, RenderObject* first, int count);
 
+	void load_images();
+
 	void load_meshes();
 	void upload_mesh(Mesh& mesh);
 
 	size_t pad_uniform_buffer_size(size_t originalSize);
-
-	AllocatedBuffer create_buffer(size_t allocSize, VkBufferUsageFlags usage, VmaMemoryUsage memoryUsage);
 };
