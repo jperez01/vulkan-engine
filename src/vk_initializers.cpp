@@ -210,6 +210,26 @@ VkDescriptorSetLayoutBinding vkinit::descriptorset_layout_binding(VkDescriptorTy
 	return setbind;
 }
 
+VkDescriptorSetLayoutBinding vkinit::descriptorset_layout_binding(VkDescriptorType type, VkShaderStageFlags stageFlags, uint32_t binding, uint32_t count) {
+	VkDescriptorSetLayoutBinding setbind = {};
+	setbind.binding = binding;
+	setbind.descriptorCount = count;
+	setbind.descriptorType = type;
+	setbind.stageFlags = stageFlags;
+	setbind.pImmutableSamplers = nullptr;
+
+	return setbind;
+}
+
+VkDescriptorSetLayoutCreateInfo vkinit::descriptorset_layout_create_info(VkDescriptorSetLayoutBinding* bindings, uint32_t count) {
+	VkDescriptorSetLayoutCreateInfo setInfo = {};
+	setInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	setInfo.bindingCount = count;
+	setInfo.pBindings = count > 0 ? bindings : nullptr;
+
+	return setInfo;
+}
+
 VkWriteDescriptorSet vkinit::write_descriptor_buffer(VkDescriptorType type, VkDescriptorSet dstSet, VkDescriptorBufferInfo* bufferInfo, uint32_t binding)
 {
 	VkWriteDescriptorSet write = {};

@@ -4,9 +4,11 @@
 #pragma once
 
 #include "vk_mesh.h"
+#include "vk_model.h"
+#include "utils/camera.h"
+#include "vk_types.h"
 
 #include <glm/glm.hpp>
-#include <vk_types.h>
 #include <vector>
 #include <functional>
 #include <deque>
@@ -82,11 +84,6 @@ struct UploadContext {
 	VkCommandBuffer commandBuffer;
 };
 
-struct Texture {
-	AllocatedImage image;
-	VkImageView imageView;
-};
-
 constexpr unsigned int FRAME_OVERLAP = 2;
 
 class VulkanEngine {
@@ -111,10 +108,12 @@ public:
 
 	UploadContext m_uploadContext;
 
-	VkDescriptorSetLayout m_globalSetLayout;
-	VkDescriptorSetLayout m_objectSetLayout;
-	VkDescriptorSetLayout m_singleTextureSetLayout;
 	VkDescriptorPool m_descriptorPool;
+
+	VkDescriptorSetLayout m_sceneSetLayout;
+	VkDescriptorSetLayout m_textureSetLayout;
+
+	VkDescriptorSet m_textureDescriptorSet;
 
 	GPUSceneData m_sceneParameters;
 	AllocatedBuffer m_sceneParameterBuffer;
@@ -148,11 +147,15 @@ public:
 	std::unordered_map<std::string, Mesh> m_meshes;
 	std::unordered_map<std::string, Texture> m_textures;
 
+	Model m_importedModel;
+
+	Camera m_camera;
+	CameraInfo m_cameraInfo;
+
 	bool _isInitialized{ false };
 	int _frameNumber {0};
 
 	VkExtent2D _windowExtent{ 1700 , 900 };
-
 	struct SDL_Window* _window{ nullptr };
 
 	//initializes everything in the engine
@@ -190,8 +193,10 @@ private:
 	Mesh* get_mesh(const std::string& name);
 
 	void draw_objects(VkCommandBuffer cmd, RenderObject* first, int count);
+	void draw_model(VkCommandBuffer cmd);
 
 	void load_images();
+	void load_model();
 
 	void load_meshes();
 	void upload_mesh(Mesh& mesh);
